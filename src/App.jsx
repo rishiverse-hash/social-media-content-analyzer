@@ -4,17 +4,26 @@ import UploadZone from './components/UploadZone';
 
 export default function App() {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [error, setError] = useState(null);
 
-  const handleFileSelect = (file) => {
-    setSelectedFile(file);
+  const handleFileSelect = (file, validationError) => {
+    if (validationError) {
+      setError(validationError);
+      setSelectedFile(null);
+    } else {
+      setError(null);
+      setSelectedFile(file);
+    }
   };
 
   const handleFileRemove = () => {
     setSelectedFile(null);
+    setError(null);
   };
 
   const handleStartProcess = () => {
-    console.log('Processing file:', selectedFile?.name);
+    if (!selectedFile) return;
+    console.log('Starting extraction & analysis for:', selectedFile.name);
   };
 
   return (
@@ -53,6 +62,8 @@ export default function App() {
           onFileSelect={handleFileSelect}
           onFileRemove={handleFileRemove}
           onStartProcess={handleStartProcess}
+          error={error}
+          onErrorDismiss={() => setError(null)}
         />
       </main>
     </div>
