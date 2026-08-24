@@ -71,6 +71,8 @@ code, pre, .font-mono {
   padding: 1.5rem 0;
   margin-bottom: 2.5rem;
   border-bottom: 1px solid var(--border-subtle);
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .logo-group {
@@ -151,6 +153,12 @@ code, pre, .font-mono {
   justify-content: center;
   gap: 1.25rem;
   position: relative;
+  outline: none;
+}
+
+.dropzone:focus-visible {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
 .dropzone:hover, .dropzone.is-dragging {
@@ -189,6 +197,8 @@ code, pre, .font-mono {
 
 .dropzone-tags {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 0.5rem;
   margin-top: 0.25rem;
 }
@@ -354,7 +364,7 @@ code, pre, .font-mono {
 /* Results Workspace Layout */
 .results-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1.1fr 0.9fr;
   gap: 1.5rem;
   align-items: start;
 }
@@ -362,6 +372,12 @@ code, pre, .font-mono {
 @media (max-width: 868px) {
   .results-grid {
     grid-template-columns: 1fr;
+  }
+  .app-container {
+    padding: 0 1rem 3rem 1rem;
+  }
+  .dropzone {
+    padding: 2.5rem 1.25rem;
   }
 }
 
@@ -371,12 +387,13 @@ code, pre, .font-mono {
   border-radius: var(--radius-md);
   padding: 1rem 1.25rem;
   font-size: 0.9rem;
-  line-height: 1.6;
+  line-height: 1.65;
   color: var(--text-main);
   max-height: 420px;
   overflow-y: auto;
   white-space: pre-wrap;
   word-break: break-word;
+  font-family: var(--font-body);
 }
 
 .extracted-text-area::-webkit-scrollbar {
@@ -461,6 +478,7 @@ code, pre, .font-mono {
   padding: 0.75rem 0.9rem;
   font-size: 0.85rem;
   color: var(--text-main);
+  line-height: 1.4;
 }
 
 .suggestion-bullet {
