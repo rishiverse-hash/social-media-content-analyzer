@@ -1,7 +1,22 @@
 import React, { useState } from 'react';
-import { Sparkles, FileText, Upload, RefreshCw, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
+import { Sparkles } from 'lucide-react';
+import UploadZone from './components/UploadZone';
 
 export default function App() {
+  const [selectedFile, setSelectedFile] = useState(null);
+
+  const handleFileSelect = (file) => {
+    setSelectedFile(file);
+  };
+
+  const handleFileRemove = () => {
+    setSelectedFile(null);
+  };
+
+  const handleStartProcess = () => {
+    console.log('Processing file:', selectedFile?.name);
+  };
+
   return (
     <div className="app-container">
       {/* Header */}
@@ -22,16 +37,23 @@ export default function App() {
         </div>
       </header>
 
-      {/* Main Workspace Shell */}
+      {/* Main Workspace */}
       <main>
-        <div className="card text-center" style={{ padding: '3rem 2rem' }}>
-          <h2 style={{ fontSize: '1.75rem', marginBottom: '0.75rem' }}>
-            Optimize your social media posts in seconds
+        <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+          <h2 style={{ fontSize: '1.85rem', fontWeight: '700', marginBottom: '0.65rem' }}>
+            Optimize your social media posts
           </h2>
-          <p style={{ color: 'var(--text-muted)', maxWidth: '580px', margin: '0 auto 2rem auto', fontSize: '0.95rem' }}>
-            Upload your post as a PDF or image. Extract readability metrics, hook strength, CTAs, and actionable engagement tips.
+          <p style={{ color: 'var(--text-muted)', maxWidth: '580px', margin: '0 auto', fontSize: '0.95rem' }}>
+            Upload your post as a PDF or image to extract text and receive actionable social media engagement recommendations.
           </p>
         </div>
+
+        <UploadZone
+          selectedFile={selectedFile}
+          onFileSelect={handleFileSelect}
+          onFileRemove={handleFileRemove}
+          onStartProcess={handleStartProcess}
+        />
       </main>
     </div>
   );
