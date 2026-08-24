@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { Sparkles, RefreshCw } from 'lucide-react';
+import { Sparkles, FileText, Cpu, Code } from 'lucide-react';
 
 import UploadZone from './components/UploadZone';
 import ProcessingState from './components/ProcessingState';
 import ResultWorkspace from './components/ResultWorkspace';
-import ErrorBanner from './components/ErrorBanner';
 
 import { extractPdfText } from './services/pdfService';
 import { extractImageOcr } from './services/ocrService';
@@ -68,7 +67,7 @@ export default function App() {
         });
       }
 
-      setProcessingStep('Analyzing social media engagement heuristics...');
+      setProcessingStep('Evaluating social engagement heuristics...');
       const analysis = analyzeSocialContent(text);
 
       setExtractedText(text);
@@ -82,7 +81,7 @@ export default function App() {
   };
 
   return (
-    <div className="app-container">
+    <div className="app-container" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       {/* Header */}
       <header className="app-header">
         <div className="logo-group">
@@ -109,26 +108,26 @@ export default function App() {
                   : 'var(--accent-emerald)'
             }}
           ></span>
-          <span style={{ textTransform: 'capitalize' }}>
+          <span style={{ textTransform: 'capitalize', fontFamily: 'var(--font-mono)' }}>
             {status === 'idle' ? 'Ready for upload' : status}
           </span>
         </div>
       </header>
 
-      {/* Main Workspace */}
-      <main>
+      {/* Main Content Workspace */}
+      <main style={{ flex: 1 }}>
         {status !== 'success' && (
           <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
             <h2 style={{ fontSize: '1.85rem', fontWeight: '700', marginBottom: '0.65rem' }}>
-              Optimize your social media content
+              Analyze your social media posts
             </h2>
             <p style={{ color: 'var(--text-muted)', maxWidth: '580px', margin: '0 auto', fontSize: '0.95rem' }}>
-              Upload your post as a PDF or image to extract readable text and receive actionable social media engagement suggestions.
+              Upload your post draft as a PDF or screenshot image to extract readable text and receive actionable social engagement recommendations.
             </p>
           </div>
         )}
 
-        {/* State Renderers */}
+        {/* State Views */}
         {status === 'processing' && (
           <ProcessingState
             fileName={selectedFile?.name}
@@ -160,6 +159,34 @@ export default function App() {
           />
         )}
       </main>
+
+      {/* Developer Footer */}
+      <footer
+        style={{
+          marginTop: '4rem',
+          paddingTop: '1.5rem',
+          borderTop: '1px solid var(--border-subtle)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          flexWrap: 'wrap',
+          gap: '1rem',
+          fontSize: '0.8rem',
+          color: 'var(--text-dim)',
+          fontFamily: 'var(--font-mono)'
+        }}
+      >
+        <div>
+          <span>Social Media Content Analyzer</span> • <span>Developer Assessment</span>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          <span>Vite + React</span>
+          <span>•</span>
+          <span>PDF.js</span>
+          <span>•</span>
+          <span>Tesseract OCR</span>
+        </div>
+      </footer>
     </div>
   );
 }
