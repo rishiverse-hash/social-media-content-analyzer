@@ -11,7 +11,7 @@ export default function ResultWorkspace({ fileName, extractedText, analysisData,
         style={{
           display: 'flex',
           alignItems: 'center',
-          justify-content: 'space-between',
+          justifyContent: 'space-between',
           marginBottom: '1.5rem'
         }}
       >
