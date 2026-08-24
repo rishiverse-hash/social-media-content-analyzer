@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Copy, Check, Hash, MessageSquare, Type } from 'lucide-react';
+import { FileText, Copy, Check } from 'lucide-react';
 
 export default function ExtractedContent({ fileName, extractedText, metrics }) {
   const [copied, setCopied] = useState(false);
@@ -15,14 +15,16 @@ export default function ExtractedContent({ fileName, extractedText, metrics }) {
   };
 
   return (
-    <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
-            <FileText size={18} style={{ color: 'var(--accent-primary)' }} />
-            <h3 style={{ fontSize: '1.1rem', fontWeight: '600' }}>Extracted Content</h3>
+    <div className="doc-viewer">
+      <div className="doc-viewer-header">
+        <div style={{ overflow: 'hidden' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
+            <FileText size={18} style={{ color: 'var(--accent-primary)', flexShrink: 0 }} />
+            <h3 style={{ fontSize: '1.05rem', fontWeight: '600', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+              Extracted Content
+            </h3>
           </div>
-          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
+          <span style={{ fontSize: '0.775rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
             {fileName}
           </span>
         </div>
@@ -30,7 +32,7 @@ export default function ExtractedContent({ fileName, extractedText, metrics }) {
         <button
           className="btn btn-secondary"
           onClick={handleCopy}
-          style={{ padding: '0.4rem 0.75rem', fontSize: '0.8rem' }}
+          style={{ padding: '0.4rem 0.8rem', fontSize: '0.8rem', flexShrink: 0 }}
           title="Copy extracted text to clipboard"
         >
           {copied ? (
@@ -47,36 +49,25 @@ export default function ExtractedContent({ fileName, extractedText, metrics }) {
         </button>
       </div>
 
-      {/* Metrics Strip */}
-      <div
-        style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, 1fr)',
-          gap: '0.75rem',
-          marginBottom: '1.25rem',
-          padding: '0.75rem',
-          backgroundColor: 'var(--bg-element)',
-          borderRadius: 'var(--radius-md)',
-          border: '1px solid var(--border-subtle)'
-        }}
-      >
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Words</div>
-          <div style={{ fontSize: '1.1rem', fontWeight: '700', fontFamily: 'var(--font-heading)' }}>{metrics?.wordCount || 0}</div>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Characters</div>
-          <div style={{ fontSize: '1.1rem', fontWeight: '700', fontFamily: 'var(--font-heading)' }}>{metrics?.charCount || 0}</div>
-        </div>
-        <div style={{ textAlign: 'center' }}>
-          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Hashtags</div>
-          <div style={{ fontSize: '1.1rem', fontWeight: '700', fontFamily: 'var(--font-heading)' }}>{metrics?.hashtagCount || 0}</div>
-        </div>
+      {/* Document Text Body */}
+      <div className="doc-viewer-body">
+        {extractedText}
       </div>
 
-      {/* Scrollable Extracted Text Container */}
-      <div className="extracted-text-area" style={{ flex: 1 }}>
-        {extractedText}
+      {/* Document Footer Bar */}
+      <div
+        style={{
+          marginTop: '0.85rem',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          fontSize: '0.75rem',
+          color: 'var(--text-dim)',
+          fontFamily: 'var(--font-mono)'
+        }}
+      >
+        <span>Raw Extracted Text</span>
+        <span>{metrics?.wordCount || 0} words • {metrics?.charCount || 0} chars</span>
       </div>
     </div>
   );

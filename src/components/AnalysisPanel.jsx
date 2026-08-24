@@ -1,49 +1,38 @@
 import React from 'react';
-import { Sparkles, CheckCircle2, AlertCircle, HelpCircle, ArrowUpRight } from 'lucide-react';
+import { Sparkles, CheckCircle2, AlertCircle } from 'lucide-react';
 
 export default function AnalysisPanel({ analysisData }) {
   if (!analysisData) return null;
 
-  const { analysis, overallScore, suggestions } = analysisData;
+  const { analysis, strengths, weaknesses } = analysisData;
 
   const getScoreBadgeClass = (score) => {
-    if (['Strong', 'Present', 'Optimal', 'Good'].includes(score)) return 'badge-good';
+    if (['Strong', 'Present', 'Optimal'].includes(score)) return 'badge-good';
     if (['Moderate', 'Implicit', 'Complex'].includes(score)) return 'badge-warning';
     return 'badge-info';
+  };
+
+  const getProgressColor = (score) => {
+    if (['Strong', 'Present', 'Optimal'].includes(score)) return 'var(--accent-emerald)';
+    if (['Moderate', 'Implicit', 'Complex'].includes(score)) return 'var(--accent-amber)';
+    return 'var(--accent-rose)';
   };
 
   return (
     <div className="card" style={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem' }}>
         <div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.2rem' }}>
             <Sparkles size={18} style={{ color: 'var(--accent-primary)' }} />
-            <h3 style={{ fontSize: '1.1rem', fontWeight: '600' }}>Content Analysis</h3>
+            <h3 style={{ fontSize: '1.05rem', fontWeight: '600' }}>Content Analysis</h3>
           </div>
           <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>
-            Rule-Based Engagement Heuristics
-          </span>
-        </div>
-
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            padding: '0.4rem 0.8rem',
-            backgroundColor: 'var(--bg-element)',
-            borderRadius: 'var(--radius-md)',
-            border: '1px solid var(--border-subtle)'
-          }}
-        >
-          <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', fontFamily: 'var(--font-mono)' }}>Score</span>
-          <span style={{ fontSize: '1.1rem', fontWeight: '700', color: overallScore >= 75 ? 'var(--accent-emerald)' : 'var(--accent-amber)' }}>
-            {overallScore}/100
+            Category Breakdowns & Readiness
           </span>
         </div>
       </div>
 
-      {/* Analysis Items */}
+      {/* Analysis Categories */}
       <div style={{ flex: 1 }}>
         {/* Hook */}
         <div className="analysis-item">
@@ -54,6 +43,15 @@ export default function AnalysisPanel({ analysisData }) {
             </span>
           </div>
           <div className="analysis-detail">{analysis.hook.detail}</div>
+          <div className="progress-bar-bg">
+            <div
+              className="progress-bar-fill"
+              style={{
+                width: `${analysis.hook.percent}%`,
+                backgroundColor: getProgressColor(analysis.hook.score)
+              }}
+            ></div>
+          </div>
         </div>
 
         {/* Call to Action */}
@@ -65,6 +63,15 @@ export default function AnalysisPanel({ analysisData }) {
             </span>
           </div>
           <div className="analysis-detail">{analysis.cta.detail}</div>
+          <div className="progress-bar-bg">
+            <div
+              className="progress-bar-fill"
+              style={{
+                width: `${analysis.cta.percent}%`,
+                backgroundColor: getProgressColor(analysis.cta.score)
+              }}
+            ></div>
+          </div>
         </div>
 
         {/* Readability */}
@@ -76,6 +83,15 @@ export default function AnalysisPanel({ analysisData }) {
             </span>
           </div>
           <div className="analysis-detail">{analysis.readability.detail}</div>
+          <div className="progress-bar-bg">
+            <div
+              className="progress-bar-fill"
+              style={{
+                width: `${analysis.readability.percent}%`,
+                backgroundColor: getProgressColor(analysis.readability.score)
+              }}
+            ></div>
+          </div>
         </div>
 
         {/* Hashtags */}
@@ -87,21 +103,37 @@ export default function AnalysisPanel({ analysisData }) {
             </span>
           </div>
           <div className="analysis-detail">{analysis.hashtags.detail}</div>
-        </div>
-
-        {/* Actionable Suggestions */}
-        <div style={{ marginTop: '1.25rem' }}>
-          <h4 style={{ fontSize: '0.95rem', fontWeight: '600', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-            <span>Actionable Suggestions</span>
-          </h4>
-          <div className="suggestions-list">
-            {suggestions.map((suggestion, index) => (
-              <div key={index} className="suggestion-card">
-                <CheckCircle2 size={16} className="suggestion-bullet" />
-                <span>{suggestion}</span>
-              </div>
-            ))}
+          <div className="progress-bar-bg">
+            <div
+              className="progress-bar-fill"
+              style={{
+                width: `${analysis.hashtags.percent}%`,
+                backgroundColor: getProgressColor(analysis.hashtags.score)
+              }}
+            ></div>
           </div>
+        </div>
+      </div>
+
+      {/* Content Health Box */}
+      <div className="health-box">
+        <div style={{ fontSize: '0.85rem', fontWeight: '600', color: 'var(--text-main)' }}>
+          Content Health Checklist
+        </div>
+        <div className="health-list">
+          {strengths?.map((item, idx) => (
+            <div key={`str-${idx}`} className="health-item" style={{ color: '#34d399' }}>
+              <CheckCircle2 size={14} style={{ flexShrink: 0 }} />
+              <span>{item}</span>
+            </div>
+          ))}
+
+          {weaknesses?.map((item, idx) => (
+            <div key={`wk-${idx}`} className="health-item" style={{ color: '#fbbf24' }}>
+              <AlertCircle size={14} style={{ flexShrink: 0 }} />
+              <span>{item}</span>
+            </div>
+          ))}
         </div>
       </div>
     </div>
